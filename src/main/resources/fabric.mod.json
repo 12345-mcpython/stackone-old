@@ -6,7 +6,7 @@
   "name": "Stack One Mod",
   "description": "You can't stack anything!!!",
   "authors": [
-    "Me!"
+    "Lao Sun"
   ],
   "contact": {
     "sources": "https://github.com/12345-mcpython/stackone"
@@ -20,6 +20,9 @@
     "main": [
       "com.laosun.stackone.StackOneMod"
     ]
+  },
+  "depends": {
+    "minecraft": ">=1.20"
   },
   "suggests": {
     "another-mod": "*"

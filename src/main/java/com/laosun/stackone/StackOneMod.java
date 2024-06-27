@@ -2,7 +2,7 @@ package com.laosun.stackone;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.item.Item;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 import java.lang.reflect.Field;
 
@@ -12,7 +12,7 @@ public class StackOneMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		for (Item i : Registry.ITEM) {
+		for (Item i : Registries.ITEM) {
 			try {
 				Class<? extends Item> a = Item.class;
 				Field f2;
