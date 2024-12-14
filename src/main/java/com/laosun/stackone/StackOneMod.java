@@ -5,19 +5,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraft.world.item.Item;
 import org.slf4j.Logger;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 @Mod(StackOneMod.MODID)
 public class StackOneMod {
@@ -28,34 +22,11 @@ public class StackOneMod {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
+        LOGGER.info("StackOneMod loaded");
     }
 
-    @SuppressWarnings("deprecation")
     private void commonSetup(final FMLCommonSetupEvent event) {
-        ArrayList<String> ignoreItems = IgnoreItem.getIgnoreItems();
-        for (Item i : ForgeRegistries.ITEMS) {
-            if (ignoreItems.contains(i.builtInRegistryHolder().key().location().toString())) {
-                continue;
-            }
-            Field a;
-
-            try {
-                a = Item.class.getDeclaredField("maxStackSize");
-            } catch (NoSuchFieldException e) {
-                try {
-                    a = Item.class.getDeclaredField("f_41370_");
-                } catch (NoSuchFieldException ex) {
-                    LOGGER.error("Failed to get field!!!");
-                    return;
-                }
-            }
-            a.setAccessible(true);
-            try {
-                a.set(i, 1);
-            } catch (IllegalAccessException e) {
-                LOGGER.error("Failed to set field!!!");
-            }
-        }
+        ItemStackSizeModifier.modifyItemStackSizes();
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
