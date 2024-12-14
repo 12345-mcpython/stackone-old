@@ -29,10 +29,11 @@ public class IgnoreItem {
         try {
             if (!file.exists() && !file.createNewFile()) {
                 LOGGER.info("Fail to create config file.");
-            } else {
-                Files.writeString(file.toPath(), "[]", StandardCharsets.UTF_8);
             }
             String jsonString = Files.readString(file.toPath());
+            if (jsonString.isEmpty()) {
+                Files.writeString(file.toPath(), "[]", StandardCharsets.UTF_8);
+            }
             JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
             for (JsonElement user : jsonArray) {
                 IgnoreItem ignore = gson.fromJson(user, IgnoreItem.class);
